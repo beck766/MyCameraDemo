@@ -78,8 +78,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         camera = android.hardware.Camera.open(0);
         android.hardware.Camera.Parameters params = camera.getParameters();
         params.setPictureFormat(PixelFormat.JPEG);//图片格式
-        params.setPreviewSize(640, 480);//图片大小
-        params.setPictureSize(640, 480);
+        params.setPreviewSize(640, 480);//预览大小，需要根据相机支持分辨率设置，surfaceView大小比例需与其一致，才不会预览变形
+        params.setPictureSize(640, 480);//图片大小
         camera.setParameters(params);//将参数设置到我的camera
     }
 
