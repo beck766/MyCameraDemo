@@ -2,17 +2,21 @@ package com.justec.mycamera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -26,14 +30,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
 
     private static final int PERMISSIONS_REQUEST_CAMERA = 800;
+    private static final String TAG = "CameraActivity";
     private SurfaceView surfaceView;
     private android.hardware.Camera camera;
     private SurfaceHolder holder;
-    private String filepath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,11 +104,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
             try {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                filepath = "/sdcard/MyPictures/" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".jpg";
-                File file = new File(filepath);
-                if (!file.exists()){
-                    file.mkdir();
-                }
+                File file = FileUtil.createImageFile(getApplicationContext());
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);//将图片压缩的流里面
                 bos.flush();// 刷新此缓冲区的输出流
@@ -111,6 +112,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 camera.stopPreview();//关闭预览 处理数据
                 camera.startPreview();//数据处理完后继续开始预览
                 bitmap.recycle();//回收bitmap空间
+                Intent intent = new Intent();
+                intent.putExtra("path",file.getAbsolutePath());
+                setResult(1,intent);
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }

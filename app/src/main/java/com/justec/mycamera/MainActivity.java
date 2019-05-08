@@ -36,5 +36,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==REQUEST_CODE_CAMERA){
+            switch (resultCode){
+                case 1:
+                    if (data != null) {
+                        ivMyPic.setImageBitmap(FileUtil.getBitmap(data.getStringExtra("path")));
+                    }
+                    break;
+            }
+        }
     }
 }

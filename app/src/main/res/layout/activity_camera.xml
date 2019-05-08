@@ -7,19 +7,19 @@
         android:id="@+id/iv_back"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:clickable="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/icon_back"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:background="#00ff00"
-        />
+        android:clickable="true"
+        android:src="@drawable/icon_back" />
 
     <SurfaceView
         android:id="@+id/surfaceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_centerInParent="true" />
 
     <ImageView
         android:id="@+id/iv_shutter"
